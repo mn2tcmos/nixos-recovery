@@ -23,10 +23,17 @@ cp /mnt/mn2/state/users/mn2tcosm/auth/wg/ghost.conf "$STG/wg/ghost.conf"
 
 # borgbase 데이터 복호용 passphrase 를 번들에 포함 → 평소엔 gpg 암호 하나만 기억하면 됨.
 # (borgbase 는 repokey-blake2 라 'borg 키 + 이 암호' 둘 다 있어야 백업 복호 가능)
-printf 'borgbase passphrase 입력(화면에 안 보임, 없으면 그냥 Enter): '
-read -rs BORG_PASS; echo
-[ -n "$BORG_PASS" ] && printf '%s' "$BORG_PASS" > "$STG/borg-passphrase.txt"
-unset BORG_PASS
+# ai-borg 가 쓰는 저장 비번 파일이 있으면 그대로 사용(재입력 오타 방지 = 단일 출처). 없으면 직접 입력.
+BORG_PASSFILE=/mnt/mn2/state/users/mn2tcosm/auth/borg_passphrase
+if [ -s "$BORG_PASSFILE" ]; then
+  cp "$BORG_PASSFILE" "$STG/borg-passphrase.txt"
+  echo "borg passphrase: 저장파일에서 자동 포함 ($BORG_PASSFILE)"
+else
+  printf 'borgbase passphrase 입력(화면에 안 보임, 없으면 그냥 Enter): '
+  read -rs BORG_PASS; echo
+  [ -n "$BORG_PASS" ] && printf '%s' "$BORG_PASS" > "$STG/borg-passphrase.txt"
+  unset BORG_PASS
+fi
 
 echo "묶을 내용:"; ls -1 "$STG"
 
