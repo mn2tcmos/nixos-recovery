@@ -7,7 +7,7 @@
 #   - 이 스크립트 자체엔 비밀이 없으니 공개 repo에 커밋해도 됨(번들을 어떻게 만들었는지 기록용).
 set -euo pipefail
 
-SSH=/mnt/mn2/state/users/mn2tcosm/auth/ssh
+SSH=/mnt/mn2/state/users/mn2tcmos/auth/ssh
 OUT="$(dirname "$(realpath "$0")")/keys.tar.gpg"
 
 STG="$(mktemp -d "${XDG_RUNTIME_DIR:-/tmp}/recovery.XXXXXX")"
@@ -19,12 +19,12 @@ cp "$SSH"/{git_ed25519,git_ed25519.pub,borg_ed25519,borg_ed25519.pub,config,know
 # ghost wg 설정(VPN 비밀) — borg 는 auth 제외(순환방지)라 백업 누락 → 여기 번들로 챙김.
 #   복구 시 bootstrap 의 tar -xz 가 /root 에 wg/ghost.conf 로 풀어줌 → auth/wg/ 로 옮기면 됨.
 mkdir -p "$STG/wg"
-cp /mnt/mn2/state/users/mn2tcosm/auth/wg/ghost.conf "$STG/wg/ghost.conf"
+cp /mnt/mn2/state/users/mn2tcmos/auth/wg/ghost.conf "$STG/wg/ghost.conf"
 
 # borgbase 데이터 복호용 passphrase 를 번들에 포함 → 평소엔 gpg 암호 하나만 기억하면 됨.
 # (borgbase 는 repokey-blake2 라 'borg 키 + 이 암호' 둘 다 있어야 백업 복호 가능)
 # ai-borg 가 쓰는 저장 비번 파일이 있으면 그대로 사용(재입력 오타 방지 = 단일 출처). 없으면 직접 입력.
-BORG_PASSFILE=/mnt/mn2/state/users/mn2tcosm/auth/borg_passphrase
+BORG_PASSFILE=/mnt/mn2/state/users/mn2tcmos/auth/borg_passphrase
 if [ -s "$BORG_PASSFILE" ]; then
   cp "$BORG_PASSFILE" "$STG/borg-passphrase.txt"
   echo "borg passphrase: 저장파일에서 자동 포함 ($BORG_PASSFILE)"
