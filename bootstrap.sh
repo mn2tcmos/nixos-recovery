@@ -6,15 +6,15 @@
 #
 #  [A] 복붙 한 방 — 3곳 자동 시도(github -> codeberg -> gitlab):
 #    for b in \
-#      https://raw.githubusercontent.com/mn2tcosm/nixos-recovery/main \
-#      https://codeberg.org/mn2tcosm/nixos-recovery/raw/branch/main \
-#      https://gitlab.com/mn2tcosm/nixos-recovery/-/raw/main ; do \
+#      https://raw.githubusercontent.com/mn2tcmos/nixos-recovery/main \
+#      https://codeberg.org/mn2tcmos/nixos-recovery/raw/branch/main \
+#      https://gitlab.com/mn2tcmos/nixos-recovery/-/raw/main ; do \
 #      curl -fLO "$b/bootstrap.sh" && break; done && bash bootstrap.sh
 #
 #  [B] 수동 — github 막혔으면 아래 중 한 줄만 받고 -> bash bootstrap.sh:
-#      https://raw.githubusercontent.com/mn2tcosm/nixos-recovery/main/bootstrap.sh
-#      https://codeberg.org/mn2tcosm/nixos-recovery/raw/branch/main/bootstrap.sh
-#      https://gitlab.com/mn2tcosm/nixos-recovery/-/raw/main/bootstrap.sh
+#      https://raw.githubusercontent.com/mn2tcmos/nixos-recovery/main/bootstrap.sh
+#      https://codeberg.org/mn2tcmos/nixos-recovery/raw/branch/main/bootstrap.sh
+#      https://gitlab.com/mn2tcmos/nixos-recovery/-/raw/main/bootstrap.sh
 #
 # 하는 일:
 #   - (minimal ISO 대비) nix 실험기능 켜고, 필요한 도구를 nix shell 로 채워 자기 재실행
@@ -39,14 +39,14 @@ fi
 #   nixos-recovery(공개) = keys.tar.gpg 를 raw(https) 로 받음.
 #   nixos-config(비공개) = ssh 로 clone (같은 git_ed25519 가 3곳 다 등록돼 있음).
 RAW_BASES=(
-  "https://raw.githubusercontent.com/mn2tcosm/nixos-recovery/main"
-  "https://codeberg.org/mn2tcosm/nixos-recovery/raw/branch/main"
-  "https://gitlab.com/mn2tcosm/nixos-recovery/-/raw/main"
+  "https://raw.githubusercontent.com/mn2tcmos/nixos-recovery/main"
+  "https://codeberg.org/mn2tcmos/nixos-recovery/raw/branch/main"
+  "https://gitlab.com/mn2tcmos/nixos-recovery/-/raw/main"
 )
 REPO_SSHS=(
-  "git@github.com:mn2tcosm/nixos-config"
-  "git@codeberg.org:mn2tcosm/nixos-config"
-  "git@gitlab.com:mn2tcosm/nixos-config"
+  "git@github.com:mn2tcmos/nixos-config"
+  "git@codeberg.org:mn2tcmos/nixos-config"
+  "git@gitlab.com:mn2tcmos/nixos-config"
 )
 
 echo "=== recovery bootstrap ==="
