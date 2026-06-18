@@ -83,7 +83,7 @@ bash /root/nixos-config/setup.sh
 fresh 설치라 state 가 비어있으면 borgbase 에서 복원(보통은 vorta GUI 로):
 ```sh
 export BORG_RSH='ssh -i /root/.ssh/borg_ed25519'
-borg extract 'ssh://tm75386d@tm75386d.repo.borgbase.com/./repo::<아카이브이름>'
+borg extract 'ssh://exitvb8k@exitvb8k.repo.borgbase.com/./repo::<아카이브이름>'
 ```
 (borg passphrase = 번들에서 푼 `borg-passphrase.txt` 값 — 프롬프트에 입력)
 
