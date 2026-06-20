@@ -18,7 +18,7 @@
 #
 # 하는 일:
 #   - (minimal ISO 대비) nix 실험기능 켜고, 필요한 도구를 nix shell 로 채워 자기 재실행
-#   - keys.tar.gpg 받아 gpg 복호(headless=loopback) -> /root/.ssh (git/borg/ghost + config + known_hosts, 600)
+#   - auth.tar.gpg 받아 gpg 복호(headless=loopback) -> /root/.ssh (git/borg/ghost + config + known_hosts, 600)
 #   - nixos-config 를 RAM(/root)에 clone -> setup.sh 메뉴(툴박스) 실행
 set -euo pipefail
 
@@ -36,7 +36,7 @@ if ! command -v git >/dev/null || ! command -v gpg >/dev/null || ! command -v sg
 fi
 
 # 미러: GitHub 우선, 죽으면 Codeberg → GitLab 로 폴백(단일 회사 의존 차단).
-#   nixos-recovery(공개) = keys.tar.gpg 를 raw(https) 로 받음.
+#   nixos-recovery(공개) = auth.tar.gpg 를 raw(https) 로 받음.
 #   nixos-config(비공개) = ssh 로 clone (같은 git_ed25519 가 3곳 다 등록돼 있음).
 RAW_BASES=(
   "https://raw.githubusercontent.com/mn2tcmos/nixos-recovery/main"
@@ -55,9 +55,9 @@ echo "1) fetching key bundle (mirror fallback)..."
 ok=
 for b in "${RAW_BASES[@]}"; do
   echo "   try: $b"
-  if curl -fLO "$b/keys.tar.gpg"; then ok=1; echo "   ok"; break; fi
+  if curl -fLO "$b/auth.tar.gpg"; then ok=1; echo "   ok"; break; fi
 done
-[ -n "$ok" ] || { echo "ERROR: keys.tar.gpg fetch failed on ALL mirrors"; exit 1; }
+[ -n "$ok" ] || { echo "ERROR: auth.tar.gpg fetch failed on ALL mirrors"; exit 1; }
 
 echo "2) decrypt (enter gpg passphrase at the prompt):"
 # 헤드리스 ISO 엔 pinentry 창이 없음 -> loopback 으로 터미널에서 직접 입력
@@ -65,7 +65,7 @@ mkdir -p /root/.gnupg && chmod 700 /root/.gnupg
 grep -q allow-loopback-pinentry /root/.gnupg/gpg-agent.conf 2>/dev/null \
   || echo allow-loopback-pinentry >> /root/.gnupg/gpg-agent.conf
 gpgconf --kill gpg-agent 2>/dev/null || true
-gpg --pinentry-mode loopback -d keys.tar.gpg | tar -xz
+gpg --pinentry-mode loopback -d auth.tar.gpg | tar -xz
 
 mkdir -p /root/.ssh
 cp git_ed25519 borg_ed25519 config known_hosts /root/.ssh/

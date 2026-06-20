@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 복구 번들 생성기 — ssh 개인키 + borg암호 + wg설정을 AES256으로 암호화해서 keys.tar.gpg 생성.
+# 복구 번들 생성기 — ssh 개인키 + borg암호 + wg설정을 AES256으로 암호화해서 auth.tar.gpg 생성.
 #   (백업은 borgbackup CLI=ai-borg 가 담당. 옛 vorta 프로필 참조는 제거됨 2026-06.)
 #
 #   - 평문 묶음은 tmpfs(RAM, /run/user/1000)에서만 만들고 끝나면 즉시 삭제 → 디스크에 평문 안 남음.
@@ -8,7 +8,7 @@
 set -euo pipefail
 
 SSH=/mnt/mn2/state/users/mn2tcmos/auth/ssh
-OUT="$(dirname "$(realpath "$0")")/keys.tar.gpg"
+OUT="$(dirname "$(realpath "$0")")/auth.tar.gpg"
 
 STG="$(mktemp -d "${XDG_RUNTIME_DIR:-/tmp}/recovery.XXXXXX")"
 trap 'rm -rf "$STG"' EXIT
