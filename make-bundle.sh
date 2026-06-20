@@ -54,8 +54,8 @@ echo "묶을 내용:"; ls -1 "$STG"
 
 # gpg 암호: bash 가 가려서(-s) 입력받아 fd 로 전달 → 터미널 에코 X, ps/디스크 노출 X.
 #   (pinentry 가 세션마다 안 잡혀 평문 에코되던 문제 차단. 분실하면 번들 영구히 못 엽니다.)
-printf 'gpg 암호 입력(화면에 안 보임): '; read -rs GPG_PASS; echo
-printf 'gpg 암호 재입력(확인): ';          read -rs GPG_PASS2; echo
+printf 'auth 번들 암호 입력(화면에 안 보임): '; read -rs GPG_PASS; echo
+printf 'auth 번들 암호 재입력(확인): ';          read -rs GPG_PASS2; echo
 [ -n "$GPG_PASS" ] || { echo "빈 암호 거부"; exit 1; }
 [ "$GPG_PASS" = "$GPG_PASS2" ] || { echo "두 입력이 다름 — 중단(번들 안 만듦)"; exit 1; }
 
